@@ -42,4 +42,4 @@ flutter:
   fonts:
     - family:  DotMatrix
       fonts:
-        - asset: assets/fonts/DotTypes.ttf
+        - asset: 'assets/fonts/Dot Matrix Normal.ttf'
