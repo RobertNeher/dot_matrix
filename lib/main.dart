@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:dot_matrix_display/src/dotmatrix_dot_patterns.dart';
-// import 'package:dot_matrix_display/src/dotmatrix_number_set.dart';
 import 'package:dot_matrix_display/src/dotmatrix.dart';
 import 'package:dot_matrix_display/src/dotmatrix_display.dart';
 
@@ -38,14 +37,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController patternCode = TextEditingController(text: 'Á');
+  TextEditingController patternCode = TextEditingController(text: 'A');
   int x = 0;
   int y = 0;
   double dotSize = 20;
   double frameWidth = 10;
   late DotMatrix dotMatrix;
   int sizeX = 700;
-  int sizeY = 500;
+  int sizeY = 700;
 
   @override
   void initState() {
@@ -63,36 +62,67 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  void getPatternCode(String code) {
-    Map patternMap = charMap;
+  void getPatternCode(String text) {
+    int rowIndex = 0;
+    int colIndex = 0;
+    int patternWidth = 0;
+    int patternHeight = 0;
+    Map _patternMap = patternMap;
 
     dotMatrix.clear();
-    dotMatrix.insertDotArray(0, 0, patternMap[code]);
+
+    for (int i = 0; i <= text.length - 1; i++) {
+      dotMatrix.insertDotArray(colIndex, rowIndex, _patternMap[text[i]]);
+      patternWidth = _patternMap[text[i]][0].length - 1;
+      patternHeight = _patternMap[text[i]].length;
+      colIndex += patternWidth;
+
+      if ((patternWidth * text.length) >= MediaQuery.of(context).size.width) {
+        colIndex = 0;
+        rowIndex += patternHeight + 1;
+      }
+    }
 
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    sizeX = MediaQuery.of(context).size.width.floor();
+    sizeY = MediaQuery.of(context).size.height.floor();
+
     return Scaffold(
         body: Form(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+      // Container(
+      //     color: Colors.black,
+      //     child: Text(
+      //       // 'ABCDEFGHIJKLMNOPQRSTUVWXYZ\n',
+      //       // '!"\$%&/()=?`{}[]\\´*+\'#~;,:._-<>|\n',
+      //       // '01234567890\n',
+      //       'abcdefghijklmnopqrstuvwxyz',
+      //       style: const TextStyle(
+      //         color: Colors.yellow,
+      //         fontFamily: 'DotMatrix',
+      //         fontSize: 72,
+      //       ),
+      //     )),
       TextFormField(
         controller: patternCode,
-        maxLength: 2,
+        // maxLength: 2,
         onFieldSubmitted: getPatternCode,
       ),
       Container(
-          width: 400,
-          height: 500,
+          width: sizeX.floorToDouble(),
+          height: sizeY.floorToDouble(),
           child: DotMatrixDisplay(
             frameColor: Colors.purple,
             frameBackgroundColor: Colors.cyan,
             dotSize: dotSize,
             scaleFactor: 1.0,
             dotMatrix: dotMatrix,
-          )),
+          ))
     ])));
   }
 }
