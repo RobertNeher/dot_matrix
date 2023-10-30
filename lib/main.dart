@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dot_matrix_display/src/dotmatrix_dot_patterns.dart';
 import 'package:dot_matrix_display/src/dotmatrix.dart';
-import 'package:dot_matrix_display/src/dotmatrix_display.dart';
+import 'package:dot_matrix_display/src/dotmatrix_display_scrolling.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController patternCode = TextEditingController(text: 'A');
   int x = 0;
   int y = 0;
-  double dotSize = 20;
+  double dotSize = 5;
   double frameWidth = 10;
   late DotMatrix dotMatrix;
   int sizeX = 700;
@@ -83,6 +83,15 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
 
+    lineCount = 0;
+
+    for (int charCount = 0; charCount < code.length; charCount++) {
+      dotMatrix.insertDotArray(charCount * (charDotWidth + 1), lineCount,
+          patternMap[code[charCount]]);
+      // if (l > dotMatrix.sizeX) {
+      // lineCount++;
+      // }
+    }
     setState(() {});
   }
 
