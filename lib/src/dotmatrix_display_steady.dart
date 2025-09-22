@@ -12,7 +12,7 @@ class DotMatrixDisplay extends StatefulWidget {
     this.frameBackgroundColor = Colors.transparent,
     this.frameWidth = 10,
     this.dotSize = 5,
-    this.scaleFactor = 1.0,
+    this.scaleFactor = 0.75,
     required this.dotMatrix,
   });
   final Color foreground;

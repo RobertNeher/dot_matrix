@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dot_matrix_display/src/dotmatrix_dot_patterns.dart';
 import 'package:dot_matrix_display/src/dotmatrix.dart';
-import 'package:dot_matrix_display/src/dotmatrix_display_scrolling.dart';
+import 'package:dot_matrix_display/src/dotmatrix_display_steady.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,14 +68,13 @@ class _MyHomePageState extends State<MyHomePage> {
     int colIndex = 0;
     int patternWidth = 0;
     int patternHeight = 0;
-    Map _patternMap = patternMap;
 
     dotMatrix.clear();
 
     for (int i = 0; i <= text.length - 1; i++) {
-      dotMatrix.insertDotArray(colIndex, rowIndex, _patternMap[text[i]]);
-      patternWidth = _patternMap[text[i]][0].length;
-      patternHeight = _patternMap[text[i]].length;
+      dotMatrix.insertDotArray(colIndex, rowIndex, patternMap[text[i]]);
+      patternWidth = patternMap[text[i]][0].length;
+      patternHeight = patternMap[text[i]].length;
       colIndex += patternWidth;
 
       if ((patternWidth * text.length) >= MediaQuery.of(context).size.width) {
@@ -109,16 +108,18 @@ class _MyHomePageState extends State<MyHomePage> {
         controller: text,
         onFieldSubmitted: getPatternCode,
       ),
-      Container(
-          width: sizeX.floorToDouble(),
-          height: sizeY.floorToDouble(),
-          child: DotMatrixDisplay(
-            frameColor: Colors.purple,
-            frameBackgroundColor: Colors.cyan,
-            dotSize: dotSize,
-            scaleFactor: 1.0,
-            dotMatrix: dotMatrix,
-          ))
+      Expanded(
+          child: SizedBox(
+              width: sizeX.floorToDouble(),
+              height: sizeY.floorToDouble(),
+              child: DotMatrixDisplay(
+                frameColor: Colors.white, //Colors.purple,
+                frameBackgroundColor: Colors.amberAccent, // Colors.cyan,
+                frameWidth: 5,
+                dotSize: dotSize,
+                scaleFactor: 0.5,
+                dotMatrix: dotMatrix,
+              )))
     ])));
   }
 }
